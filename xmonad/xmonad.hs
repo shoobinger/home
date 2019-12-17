@@ -1,14 +1,21 @@
 import XMonad
 import XMonad.Config.Desktop
-import XMonad.Util.Run(spawnPipe)
+import XMonad.Util.Run
 import XMonad.Util.EZConfig(additionalKeysP, removeKeysP)
 import XMonad.Layout.NoBorders
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.DynamicLog
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.GroupNavigation
 
+myDynamicPP = def { ppCurrent = xmobarColor "#1ABC9C" ""
+           , ppTitle = xmobarColor "#1ABC9C" "" . shorten 60
+           , ppUrgent  = xmobarColor "red" "yellow"
+           , ppHiddenNoWindows = xmobarColor "#666666" ""
+           } 
+
 main = do
-  xmproc <- spawnPipe "xmobar ~/.xmobarrc"
+  xmobarProc <- spawnPipe "xmobar"
   xmonad 
     $ navigation2DP def ("k", "h", "j", "l")
                         [("M-",   windowGo  )
@@ -17,7 +24,7 @@ main = do
     $ desktopConfig
     { manageHook = manageDocks <+> manageHook defaultConfig
     , layoutHook = avoidStruts $ smartBorders $ layoutHook defaultConfig
-    , logHook = historyHook
+    , logHook = dynamicLogWithPP myDynamicPP { ppOutput = hPutStrLn xmobarProc } >> historyHook
     , terminal  = "alacritty"
     , modMask   = mod4Mask
     , normalBorderColor  = "#000000"

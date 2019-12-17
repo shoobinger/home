@@ -22,9 +22,10 @@ Config { font = "xft:Fira Sans:style=Regular:size=12:antialias=true"
                     , Run Kbd [ ("us" , "EN")
                               , ("ru" , "RU")
                               ]
-                    , Run Alsa "default" "Master" ["-t", "Vol: <volume>"]
+                    , Run Alsa "default" "Master" ["-t", "Vol: <volume>%"]
+                    , Run StdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%cpu% | %memory% }{ %alsa:default:Master% | %kbd% | <fc=#ee9a00>%date%</fc>"
+       , template = "%StdinReader% }{ %cpu% | %memory% | %alsa:default:Master% | %kbd% | <fc=#ffffff>%date%</fc>"
        }

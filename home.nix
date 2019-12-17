@@ -118,6 +118,7 @@ in {
       https-everywhere
       vim-vixen
       ublock-origin
+      bitwarden
     ];
     profiles = {
       "ivan" = {
@@ -138,6 +139,7 @@ in {
   
 		  "extensions.pocket.enabled" = false;
 
+          "app.shield.optoutstudies.enabled" = false;
           "browser.ping-centre.telemetry" = false;
           "toolkit.telemetry.archive.enabled" = false;
           "toolkit.telemetry.bhrPing.enabled" = false;
@@ -156,6 +158,9 @@ in {
           "privacy.trackingprotection.fingerprinting.enabled" = true;
           "privacy.trackingprotection.socialtracking.enabled" = true;
 
+          "services.sync.engine.passwords" = false;
+          "signon.rememberSignons" = false;
+          "signon.autofillForms" = false;
 
         };
       };
