@@ -11,6 +11,7 @@ set shiftwidth=4
 set hidden
 set expandtab
 set laststatus=2
+set showtabline=0
 set undodir=~/.vimundo
 
 set undofile

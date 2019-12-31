@@ -22,6 +22,10 @@ in {
     ];
   };
 
+  services.taffybar = {
+    enable = true;
+  };
+
   programs.git = {
     enable = true;
     userName  = "josrv";
@@ -173,9 +177,19 @@ in {
     serverAliveInterval = 60;
   };
 
+  programs.emacs = {
+    enable = true;
+  };
+
+  services.emacs = {
+    enable = true;
+  };
+
   home.file = {
     ".xinitrc".source = ./.xinitrc;
     ".xmobarrc".source = ./xmonad/xmobarrc;
+    ".config/emacs/config.org".source = ./emacs/config.org;
+    ".emacs.d/init.el".source = ./emacs/init.el;
     ".configs".source = pkgs.writeText "configs" ''
       /etc/nixos/configuration.nix
       $HOME/.config/nixpkgs

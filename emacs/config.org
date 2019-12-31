@@ -1,0 +1,96 @@
+* Configuration
+** Packages
+*** straight.el
+  #+begin_src emacs-lisp
+
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+    (setq straight-use-package-by-default t)
+    (straight-use-package 'use-package)
+  #+end_src
+*** Packages 
+  #+begin_src emacs-lisp
+  
+    (straight-use-package 'evil)
+    (straight-use-package 'evil-org)
+    (straight-use-package 'evil-leader)
+
+    (global-evil-leader-mode) 
+
+    (require 'evil) ; evil-mode
+    (evil-mode 1)
+
+    (unless (version< org-version "9.2")
+        (require 'org-tempo)) ; easy-templates
+    (require 'use-package)
+
+  #+end_src
+    
+** Look & feel   
+
+*** Gui customization
+    #+begin_src emacs-lisp
+      (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
+      (tool-bar-mode -1)   ; no tool bar with icons
+      (scroll-bar-mode -1) ; no scroll bars
+    #+end_src
+
+*** Editor
+
+    #+BEGIN_SRC emacs-lisp
+      (evil-leader/set-leader "f")
+    #+END_SRC
+
+     #+begin_src emacs-lisp
+       (line-number-mode 1) ; column number in mode line
+       (column-number-mode 1) ; line number in mode line
+      
+       (global-display-line-numbers-mode 1) ; line number in margin
+
+       (customize-set-variable 'x-select-enable-clipboard t) ; Use the clipboard
+      
+       (customize-set-variable 'indent-tabs-mode nil)
+       (customize-set-variable 'standard-indent 2)
+       (customize-set-variable 'tab-width 2)
+       (customize-set-variable 'tab-stop-list '(2 4 6))
+     #+end_src
+**** Highlighting
+     #+begin_src emacs-lisp
+     (use-package highlight-parentheses
+       :config
+       (add-hook 'prog-mode-hook #'highlight-parentheses-mode))
+     (use-package rainbow-delimiters
+       :config
+       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+     #+end_src
+
+*** Helm
+
+     #+begin_src emacs-lisp
+        (straight-use-package 'helm)
+        (require 'helm-config)
+        (helm-mode 1)
+        
+        (evil-leader/set-key 
+          "f" 'helm-find-files
+          "b" 'helm-mini
+          "t" 'org-time-stamp)
+     #+end_src
+
+*** Fonts and colors
+    #+begin_src emacs-lisp
+      (load-theme 'wombat t)
+      (set-frame-font "Fira Mono 15")
+    #+end_src
+    
