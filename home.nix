@@ -1,18 +1,11 @@
 { pkgs, ... }:
 
-let 
-  customPlugins = {
-    lightline-bufferline = pkgs.vimUtils.buildVimPlugin {
-        name = "lightline-bufferline";
-        src = pkgs.fetchFromGitHub {
-            owner = "mengelbrecht";
-            repo = "lightline-bufferline";
-            rev = "87431565ccfcc4c9ac892ab271eae77920c191e5";
-            sha256 = "0dmcabdp8768fnb0mzzcidz6bx1aj93fgm4l4z768ils3xycbyw8";
-        };
-    };
-  };
-in {
+{
+  imports = [
+    ./common.nix
+    ./emacs.nix
+  ];
+
   xsession.windowManager.xmonad = {
     enable = true;
     enableContribAndExtras = true;
@@ -28,20 +21,8 @@ in {
 
   programs.git = {
     enable = true;
-    userName  = "josrv";
-    userEmail = "josrv@runbox.com";
-  };
-
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
-    extraConfig = builtins.readFile ./neovim/init.vim;
-    plugins = [ 
-      pkgs.vimPlugins.lightline-vim 
-      pkgs.vimPlugins.vim-nix
-      customPlugins.lightline-bufferline 
-    ];
+    userName  = "suive";
+    userEmail = "ivan@suive.name";
   };
 
   programs.alacritty = {
@@ -93,27 +74,9 @@ in {
   };
 
   programs.zsh = {
-    enable = true;
-    initExtra = builtins.readFile ./.zshrc;
-    oh-my-zsh = {
-      enable = true;
-      theme = "agnoster";
-      plugins = [
-        "git"
-      ];
-    };
     shellAliases = {
-      ls = "ls -hNla --color=auto";
-      ".." = "cd ..";
-      v = "vim";
-      hms = "home-manager switch";
       ns = "sudo nixos-rebuild switch";
     };
-    sessionVariables = {
-      EDITOR = "nvim";
-      DEFAULT_USER = "ivan";
-    };
-    enableAutosuggestions = true;
   };
 
   programs.firefox = {
@@ -129,19 +92,19 @@ in {
         settings = {
           "browser.newtabpage.activity-stream.feeds.telemetry" = false;
           "browser.newtabpage.activity-stream.telemetry" = false;
-		  "browser.newtabpage.activity-stream.feeds.snippets" = false;
-		  "browser.newtabpage.activity-stream.feeds.topsites" = false;
-		  "browser.newtabpage.activity-stream.feeds.highlights" = false;
-		  "browser.newtabpage.activity-stream.feeds.section.highlights" = false;
+		      "browser.newtabpage.activity-stream.feeds.snippets" = false;
+		      "browser.newtabpage.activity-stream.feeds.topsites" = false;
+		      "browser.newtabpage.activity-stream.feeds.highlights" = false;
+		      "browser.newtabpage.activity-stream.feeds.section.highlights" = false;
           "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
 
           "layers.acceleration.force-enabled" = true;
           "layers.gpu-process.force-enabled" = true;
 
-		  "general.warnOnAboutConfig" = false;
-		  "browser.warnOnQuit" = false;
+		      "general.warnOnAboutConfig" = false;
+		      "browser.warnOnQuit" = false;
   
-		  "extensions.pocket.enabled" = false;
+		      "extensions.pocket.enabled" = false;
 
           "app.shield.optoutstudies.enabled" = false;
           "browser.ping-centre.telemetry" = false;
@@ -165,34 +128,13 @@ in {
           "services.sync.engine.passwords" = false;
           "signon.rememberSignons" = false;
           "signon.autofillForms" = false;
-
         };
       };
     };
-
-  };
-
-  programs.ssh = {
-    enable = true;
-    serverAliveInterval = 60;
-  };
-
-  programs.emacs = {
-    enable = true;
-  };
-
-  services.emacs = {
-    enable = true;
   };
 
   home.file = {
     ".xinitrc".source = ./.xinitrc;
     ".xmobarrc".source = ./xmonad/xmobarrc;
-    ".config/emacs/config.org".source = ./emacs/config.org;
-    ".emacs.d/init.el".source = ./emacs/init.el;
-    ".configs".source = pkgs.writeText "configs" ''
-      /etc/nixos/configuration.nix
-      $HOME/.config/nixpkgs
-    '';
   };
 }

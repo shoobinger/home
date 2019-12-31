@@ -63,7 +63,6 @@
     
 *** Editor
 
-
      #+begin_src emacs-lisp
        (line-number-mode 1) ; column number in mode line
        (column-number-mode 1) ; line number in mode line
@@ -77,6 +76,15 @@
        (customize-set-variable 'tab-width 2)
        (customize-set-variable 'tab-stop-list '(2 4 6))
      #+end_src
+     
+*** Languages
+#+BEGIN_SRC emacs-lisp
+
+(use-package nix-mode
+  :mode "\\.nix\\'")
+
+#+END_SRC
+
 **** Highlighting
      #+begin_src emacs-lisp
      (use-package highlight-parentheses
@@ -86,7 +94,7 @@
        :config
        (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
      #+end_src
-
+     
 *** Fonts and colors
     #+begin_src emacs-lisp
       (load-theme 'wombat t)
