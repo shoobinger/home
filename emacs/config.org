@@ -22,21 +22,34 @@
 *** Packages 
   #+begin_src emacs-lisp
   
+    ; evil-mode
     (straight-use-package 'evil)
     (straight-use-package 'evil-org)
     (straight-use-package 'evil-leader)
 
     (global-evil-leader-mode) 
-
-    (require 'evil) ; evil-mode
+    (require 'evil)
     (evil-mode 1)
-
-    (unless (version< org-version "9.2")
-        (require 'org-tempo)) ; easy-templates
-    (require 'use-package)
-
-  #+end_src
     
+    ; easy-templates
+    (unless (version< org-version "9.2")
+        (require 'org-tempo)) 
+    (require 'use-package)
+    
+    ; projectile
+    (straight-use-package 'projectile)
+    (projectile-mode +1)
+    (setq projectile-project-search-path '("~/"))
+    (setq projectile-indexing-method 'native)
+
+    ; helm
+    (straight-use-package 'helm)
+    (straight-use-package 'helm-org)
+    (straight-use-package 'helm-projectile)
+    (require 'helm-config)
+    (helm-mode 1)
+  #+end_src
+  
 ** Look & feel   
 
 *** Gui customization
@@ -44,13 +57,12 @@
       (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
       (tool-bar-mode -1)   ; no tool bar with icons
       (scroll-bar-mode -1) ; no scroll bars
+      
     #+end_src
 
+    
 *** Editor
 
-    #+BEGIN_SRC emacs-lisp
-      (evil-leader/set-leader "f")
-    #+END_SRC
 
      #+begin_src emacs-lisp
        (line-number-mode 1) ; column number in mode line
@@ -75,22 +87,36 @@
        (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
      #+end_src
 
-*** Helm
-
-     #+begin_src emacs-lisp
-        (straight-use-package 'helm)
-        (require 'helm-config)
-        (helm-mode 1)
-        
-        (evil-leader/set-key 
-          "f" 'helm-find-files
-          "b" 'helm-mini
-          "t" 'org-time-stamp)
-     #+end_src
-
 *** Fonts and colors
     #+begin_src emacs-lisp
       (load-theme 'wombat t)
       (set-frame-font "Fira Mono 15")
     #+end_src
     
+
+
+** Keys
+*** Leader key
+  #+BEGIN_SRC emacs-lisp
+    (evil-leader/set-leader "f")
+  #+END_SRC
+*** Mappings
+  <> means the leader key
+  
+  | key  | Command                     | Description                                                          |
+  | <> d | helm-find-files             | Open a file in a new buffer (not recursive)                          |
+  | <> f | helm-projectile             | Open Projectile prompt (recursive file search in ~/.projectile dirs) |
+  | <> b | helm-mini                   | Open Helm mini-buffer (buffers and recent files                      |
+  | <> h | helm-org-in-buffer-headings | Jump to an Org heading in the current buffer                         |
+  | <> r | helm-M-x                    | Run a command                                                        |
+  | <> t | org-time-stamp              | Open the timestamp prompt                                   |
+
+  #+BEGIN_SRC emacs-lisp
+   (evil-leader/set-key 
+     "d" 'helm-find-files
+     "f" 'helm-projectile
+     "b" 'helm-mini
+     "h" 'helm-org-in-buffer-headings
+     "r" 'helm-M-x
+     "t" 'org-time-stamp)
+  #+END_SRC
