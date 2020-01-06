@@ -15,9 +15,7 @@
     ];
   };
 
-  services.taffybar = {
-    enable = true;
-  };
+  services.taffybar.enable = true;
 
   programs.git = {
     enable = true;
@@ -128,10 +126,17 @@
           "services.sync.engine.passwords" = false;
           "signon.rememberSignons" = false;
           "signon.autofillForms" = false;
+
+          "dom.webnotifications.enabled" = false;
+          "dom.webnotifications.serviceworker.enabled" = false;
+          "dom.push.enabled" = false;
+          "dom.pushconnection.enabled" = false;
         };
       };
     };
   };
+
+  programs.mpv.enable = true;
 
   home.file = {
     ".xinitrc".source = ./.xinitrc;

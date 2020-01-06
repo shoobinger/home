@@ -1,4 +1,11 @@
 * Configuration
+** Base
+  #+BEGIN_SRC emacs-lisp
+    
+    (require 'cl) ; lisp extensions
+    
+    (setq custom-file "~/.emacs-custom.el") ; easy customization buffer will be saved here
+  #+END_SRC
 ** Packages
 *** straight.el
   #+begin_src emacs-lisp
@@ -48,7 +55,12 @@
     (straight-use-package 'helm-projectile)
     (require 'helm-config)
     (helm-mode 1)
-  #+end_src
+
+    ; Enable Helm global fuzzy matching
+    (setq helm-mode-fuzzy-match t)
+    (setq helm-completion-in-region-fuzzy-match t)
+
+     #+end_src
   
 ** Look & feel   
 
@@ -59,6 +71,19 @@
       (scroll-bar-mode -1) ; no scroll bars
       
     #+end_src
+
+**** Helm customization
+    #+BEGIN_SRC emacs-lisp
+      (custom-set-faces
+        '(helm-candidate-number ((t (:background "goldenrod1" :foreground "black"))))
+        '(helm-header-line-left-margin ((t (:background "goldenrod1" :foreground "black"))))
+        '(helm-match ((t (:foreground "goldenrod1"))))
+        '(helm-prefarg ((t (:foreground "DarkSeaGreen3"))))
+        '(helm-selection ((t (:background "DarkSeaGreen3" :foreground "black"))))
+        '(helm-separator ((t (:foreground "tomato1"))))
+        '(helm-source-header ((t (:background "SkyBlue4" :foreground "white" :weight bold :height 1.1 :family "Fira Sans"))))
+        '(helm-visible-mark ((t (:background "OliveDrab1" :foreground "black")))))
+    #+END_SRC
 
     
 *** Editor
@@ -122,9 +147,35 @@
   #+BEGIN_SRC emacs-lisp
    (evil-leader/set-key 
      "d" 'helm-find-files
-     "f" 'helm-projectile
+     "j" 'helm-projectile
      "b" 'helm-mini
      "h" 'helm-org-in-buffer-headings
      "r" 'helm-M-x
      "t" 'org-time-stamp)
   #+END_SRC
+
+*** Remember last layout in Insert/Replace mode
+
+#+BEGIN_SRC emacs-lisp
+
+; saved-layout is a layout that was used in Insert/Replace state.
+(setq saved-layout (shell-command-to-string "xkblayout-state print %c"))
+
+(setq restore-layout (lambda ()
+            (shell-command (concat "xkblayout-state set " saved-layout))))
+
+; save editing layout and set to English so that Normal mode function correctly
+(setq save-layout-and-reset (lambda ()
+            (setq saved-layout (shell-command-to-string "xkblayout-state print %c"))
+            (shell-command "xkblayout-state set 0")
+            ))
+
+; Restore last layout
+(add-hook 'evil-insert-state-entry-hook restore-layout)
+(add-hook 'evil-replace-state-entry-hook restore-layout)
+
+; save last layout, set eng
+(add-hook 'evil-insert-state-exit-hook save-layout-and-reset)
+(add-hook 'evil-replace-state-exit-hook save-layout-and-reset)
+
+#+END_SRC
