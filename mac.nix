@@ -1,6 +1,5 @@
 { pkgs, ... }:
 
 {
-  imports = [ './common.nix' ];
-  imports = [ './emacs.nix' ];
+  imports = [ ./common.nix ./emacs.nix ];
 }

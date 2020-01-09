@@ -1,6 +1,11 @@
 { pkgs, ... }:
 
 {
+
+  programs.home-manager = {
+    enable = true;
+  };
+
   programs.neovim = {
     enable = true;
     viAlias = true;
@@ -14,7 +19,6 @@
 
   programs.zsh = {
     enable = true;
-    initExtra = builtins.readFile ./.zshrc;
     oh-my-zsh = {
       enable = true;
       theme = "agnoster";
@@ -23,7 +27,7 @@
       ];
     };
     shellAliases = {
-      ls = "ls -hNla --color=auto";
+      ls = "ls -hla --color=auto";
       ".." = "cd ..";
       v = "vim";
       hms = "home-manager switch";
@@ -35,9 +39,5 @@
     enableAutosuggestions = true;
   };
 
-  programs.ssh = {
-    enable = true;
-    serverAliveInterval = 60;
-  };
-
+  home.file.".projectile".source = ./.projectile;
 }
