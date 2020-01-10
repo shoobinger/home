@@ -19,15 +19,11 @@
 
   programs.zsh = {
     enable = true;
-    oh-my-zsh = {
-      enable = true;
-      theme = "agnoster";
-      plugins = [
-        "git"
-      ];
-    };
+    profileExtra = ''
+      source $HOME/.profile
+      export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
+    '';
     shellAliases = {
-      ls = "ls -hla --color=auto";
       ".." = "cd ..";
       v = "vim";
       hms = "home-manager switch";
@@ -39,5 +35,8 @@
     enableAutosuggestions = true;
   };
 
-  home.file.".projectile".source = ./.projectile;
+  home.file = {
+    ".projectile".source = ./.projectilesrc;
+  };
+  
 }

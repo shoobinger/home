@@ -61,7 +61,10 @@
     (setq helm-completion-in-region-fuzzy-match t)
 
      #+end_src
-  
+*** Magit  
+#+BEGIN_SRC emacs-lisp
+  (straight-use-package 'magit)
+#+END_SRC
 ** Look & feel   
 
 *** Gui customization
@@ -138,11 +141,11 @@
   
   | key  | Command                     | Description                                                          |
   | <> d | helm-find-files             | Open a file in a new buffer (not recursive)                          |
-  | <> f | helm-projectile             | Open Projectile prompt (recursive file search in ~/.projectile dirs) |
+  | <> j | helm-projectile             | Open Projectile prompt (recursive file search in ~/.projectile dirs) |
   | <> b | helm-mini                   | Open Helm mini-buffer (buffers and recent files                      |
   | <> h | helm-org-in-buffer-headings | Jump to an Org heading in the current buffer                         |
   | <> r | helm-M-x                    | Run a command                                                        |
-  | <> t | org-time-stamp              | Open the timestamp prompt                                   |
+  | <> t | org-time-stamp              | Open the timestamp prompt                                            |
 
   #+BEGIN_SRC emacs-lisp
    (evil-leader/set-key 

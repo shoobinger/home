@@ -1,2 +1,4 @@
 +/Org
 +/.config/nixpkgs
+-.git
+-*~

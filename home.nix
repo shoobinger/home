@@ -1,1 +1,0 @@
-/Users/ivan/.config/nixpkgs/mac.nix

@@ -138,6 +138,12 @@
 
   programs.mpv.enable = true;
 
+  programs.zsh = {
+    shellAliases = {
+      ls = "ls -hlNa --color=auto";
+    }
+  };
+
   home.file = {
     ".xinitrc".source = ./.xinitrc;
     ".xmobarrc".source = ./xmonad/xmobarrc;
