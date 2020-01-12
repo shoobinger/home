@@ -20,7 +20,7 @@
   programs.git = {
     enable = true;
     userName  = "suive";
-    userEmail = "ivan@suive.name";
+    userEmail = "e@suive.name";
   };
 
   programs.alacritty = {
@@ -70,13 +70,6 @@
       };
     };
   };
-
-  programs.zsh = {
-    shellAliases = {
-      ns = "sudo nixos-rebuild switch";
-    };
-  };
-
   programs.firefox = {
     enable = true;
     extensions = with pkgs.nur.repos.rycee.firefox-addons; [
@@ -141,7 +134,13 @@
   programs.zsh = {
     shellAliases = {
       ls = "ls -hlNa --color=auto";
-    }
+      ns = "sudo nixos-rebuild switch";
+    };
+  };
+
+  programs.go = {
+    enable = true;
+    goPath = ".go";
   };
 
   home.file = {

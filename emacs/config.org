@@ -23,8 +23,8 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-    (setq straight-use-package-by-default t)
-    (straight-use-package 'use-package)
+  (setq straight-use-package-by-default t)
+  (straight-use-package 'use-package)
   #+end_src
 *** Packages 
   #+begin_src emacs-lisp
@@ -66,13 +66,15 @@
   (straight-use-package 'magit)
 #+END_SRC
 ** Look & feel   
-
 *** Gui customization
     #+begin_src emacs-lisp
-      (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
-      (tool-bar-mode -1)   ; no tool bar with icons
-      (scroll-bar-mode -1) ; no scroll bars
-      
+  (straight-use-package 'solarized-theme)
+  (load-theme 'solarized-light t)
+  (set-frame-font "Fira Mono 15")
+
+  (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
+  (tool-bar-mode -1)   ; no tool bar with icons
+  (scroll-bar-mode -1) ; no scroll bars
     #+end_src
 
 **** Helm customization
@@ -88,31 +90,26 @@
         '(helm-visible-mark ((t (:background "OliveDrab1" :foreground "black")))))
     #+END_SRC
 
-    
 *** Editor
+#+begin_src emacs-lisp
+  (line-number-mode 1) ; column number in mode line
+  (column-number-mode 1) ; line number in mode line
+ 
+  (global-display-line-numbers-mode 1) ; line number in margin
 
-     #+begin_src emacs-lisp
-       (line-number-mode 1) ; column number in mode line
-       (column-number-mode 1) ; line number in mode line
-      
-       (global-display-line-numbers-mode 1) ; line number in margin
-
-       (customize-set-variable 'x-select-enable-clipboard t) ; Use the clipboard
-      
-       (customize-set-variable 'indent-tabs-mode nil)
-       (customize-set-variable 'standard-indent 2)
-       (customize-set-variable 'tab-width 2)
-       (customize-set-variable 'tab-stop-list '(2 4 6))
-     #+end_src
+  (customize-set-variable 'x-select-enable-clipboard t) ; Use the clipboard
+ 
+  (customize-set-variable 'indent-tabs-mode nil)
+  (customize-set-variable 'standard-indent 2)
+  (customize-set-variable 'tab-width 2)
+  (customize-set-variable 'tab-stop-list '(2 4 6))
+#+end_src
      
 *** Languages
 #+BEGIN_SRC emacs-lisp
-
-(use-package nix-mode
-  :mode "\\.nix\\'")
-
+  (use-package nix-mode
+    :mode "\\.nix\\'")
 #+END_SRC
-
 **** Highlighting
      #+begin_src emacs-lisp
      (use-package highlight-parentheses
@@ -124,12 +121,44 @@
      #+end_src
      
 *** Fonts and colors
-    #+begin_src emacs-lisp
-      (load-theme 'wombat t)
-      (set-frame-font "Fira Mono 15")
-    #+end_src
-    
+#+BEGIN_SRC emacs-lisp
+  (setq org-hide-emphasis-markers t) ; hide *...* and /.../
+  (custom-theme-set-faces
+    'user
+    '(variable-pitch ((t (:family "Charis SIL"))))
+    '(fixed-pitch ((t ( :family "Fira Mono")))))
+  (setq-default line-spacing 0)
 
+  (straight-use-package 'org-bullets)
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook 'org-bullets-mode)
+#+END_SRC
+*** Org mode customization
+Use variable pitch (serif font) in Org excluding code blocks and other special blocks
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook
+           '(lambda ()
+               (variable-pitch-mode 1)
+               (mapc
+                (lambda (face) ;; Rescale and inherit the properties from the fixed-pitch font.
+                  (set-face-attribute face nil :inherit 'fixed-pitch))
+                (list 'org-code 'org-block 'org-table 'org-property-value 'org-formula
+                      'org-tag 'org-verbatim 'org-date 'company-tooltip
+                      'org-special-keyword 'org-block-begin-line
+                      'org-block-end-line 'org-meta-line
+                      'org-document-info-keyword))))
+
+#+END_SRC
+** Modes
+*** Ebooks
+#+BEGIN_SRC emacs-lisp
+  (straight-use-package 'nov)
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+  (setq nov-text-width 80)
+
+  (evil-set-initial-state 'nov-mode 'emacs) ; disable evil-mode
+#+END_SRC
+**** TODO justify text
 
 ** Keys
 *** Leader key
@@ -157,6 +186,7 @@
      "t" 'org-time-stamp)
   #+END_SRC
 
+** Misc
 *** Remember last layout in Insert/Replace mode
 
 #+BEGIN_SRC emacs-lisp
@@ -180,5 +210,15 @@
 ; save last layout, set eng
 (add-hook 'evil-insert-state-exit-hook save-layout-and-reset)
 (add-hook 'evil-replace-state-exit-hook save-layout-and-reset)
+#+END_SRC
 
+*** Automatically open write-protected files as root
+
+#+BEGIN_SRC emacs-lisp
+(defun open-as-root ()
+  (unless (and buffer-file-name
+               (file-writable-p buffer-file-name))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(add-hook 'find-file-hook 'open-as-root)
 #+END_SRC
