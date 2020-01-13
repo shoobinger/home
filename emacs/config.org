@@ -161,6 +161,7 @@
 
 #+BEGIN_SRC emacs-lisp
 
+(if (eq system-type 'gnu/linux)
 ; saved-layout is a layout that was used in Insert/Replace state.
 (setq saved-layout (shell-command-to-string "xkblayout-state print %c"))
 
@@ -180,5 +181,6 @@
 ; save last layout, set eng
 (add-hook 'evil-insert-state-exit-hook save-layout-and-reset)
 (add-hook 'evil-replace-state-exit-hook save-layout-and-reset)
+)
 
 #+END_SRC
