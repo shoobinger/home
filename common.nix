@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 {
-
   programs.home-manager = {
     enable = true;
   };
@@ -19,6 +18,7 @@
 
   programs.zsh = {
     enable = true;
+    initExtra = builtins.readFile ./.zshrc;
     profileExtra = ''
       source $HOME/.profile
       export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
@@ -31,6 +31,9 @@
     sessionVariables = {
       EDITOR = "nvim";
       DEFAULT_USER = "ivan";
+      ZSH_AUTOSUGGEST_USE_ASYNC="true";
+      ZSH_AUTOSUGGEST_MANUAL_REBIND="true";
+      PROMPT="|%F{153}%n@%m%f|%F{174}%1~%f> ";
     };
     enableAutosuggestions = true;
   };
