@@ -9,7 +9,6 @@
     };
     profileExtra = ''
       source $HOME/.profile
-      source "$HOME/.nix-profile/etc/profile.d/nix.sh"
       export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
     '';
   };
