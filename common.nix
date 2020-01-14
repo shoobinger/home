@@ -19,10 +19,6 @@
   programs.zsh = {
     enable = true;
     initExtra = builtins.readFile ./.zshrc;
-    profileExtra = ''
-      source $HOME/.profile
-      export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
-    '';
     shellAliases = {
       ".." = "cd ..";
       v = "vim";
