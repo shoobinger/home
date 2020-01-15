@@ -5,6 +5,7 @@
     (require 'cl) ; lisp extensions
     
     (setq custom-file "~/.emacs-custom.el") ; easy customization buffer will be saved here
+
   #+END_SRC
 ** Packages
 *** straight.el
@@ -54,11 +55,22 @@
     (straight-use-package 'helm-org)
     (straight-use-package 'helm-projectile)
     (require 'helm-config)
-    (helm-mode 1)
-
-    ; Enable Helm global fuzzy matching
-    (setq helm-mode-fuzzy-match t)
-    (setq helm-completion-in-region-fuzzy-match t)
+    ;(helm-mode 1)
+ 
+    ; ivy/counsel/swiper
+    (straight-use-package 'counsel)
+    (straight-use-package 'counsel-projectile)
+    (straight-use-package 'ivy-hydra)
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d) ")
+    (setq ivy-height 20)
+    
+    ; Ranger
+    (straight-use-package 'ranger)
+    (ranger-override-dired-mode t) 
+    (setq ranger-dont-show-binary t)
+    (setq ranger-show-hidden t)
 
      #+end_src
 *** Magit  
@@ -178,14 +190,14 @@ Use variable pitch (serif font) in Org excluding code blocks and other special b
 
   #+BEGIN_SRC emacs-lisp
    (evil-leader/set-key 
-     "d" 'helm-find-files
-     "j" 'helm-projectile
-     "b" 'helm-mini
+     "d" 'find-file
+     "j" 'counsel-projectile
+     "b" 'ivy-switch-buffer
      "h" 'helm-org-in-buffer-headings
-     "r" 'helm-M-x
+     "r" 'counsel-M-x
      "t" 'org-time-stamp)
+   
   #+END_SRC
-
 ** Misc
 *** Remember last layout in Insert/Replace mode
 
